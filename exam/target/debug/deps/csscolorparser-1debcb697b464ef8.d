@@ -1,0 +1,8 @@
+/Users/MatthiasSchmitt/Desktop/Studium/9.Semester/VL/rust/RUST_exam/exam/target/debug/deps/libcsscolorparser-1debcb697b464ef8.rmeta: /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/lib.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/color.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/parser/mod.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/parser/named_colors.rs
+
+/Users/MatthiasSchmitt/Desktop/Studium/9.Semester/VL/rust/RUST_exam/exam/target/debug/deps/csscolorparser-1debcb697b464ef8.d: /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/lib.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/color.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/parser/mod.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/parser/named_colors.rs
+
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/lib.rs:
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/color.rs:
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/parser/mod.rs:
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csscolorparser-0.5.0/src/parser/named_colors.rs:

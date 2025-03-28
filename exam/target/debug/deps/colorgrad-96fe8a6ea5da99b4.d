@@ -1,0 +1,10 @@
+/Users/MatthiasSchmitt/Desktop/Studium/9.Semester/VL/rust/RUST_exam/exam/target/debug/deps/libcolorgrad-96fe8a6ea5da99b4.rmeta: /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/lib.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/gimp_gradient.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/preset.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/spline.rs
+
+/Users/MatthiasSchmitt/Desktop/Studium/9.Semester/VL/rust/RUST_exam/exam/target/debug/deps/libcolorgrad-96fe8a6ea5da99b4.rlib: /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/lib.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/gimp_gradient.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/preset.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/spline.rs
+
+/Users/MatthiasSchmitt/Desktop/Studium/9.Semester/VL/rust/RUST_exam/exam/target/debug/deps/colorgrad-96fe8a6ea5da99b4.d: /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/lib.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/gimp_gradient.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/preset.rs /Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/spline.rs
+
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/lib.rs:
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/gimp_gradient.rs:
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/preset.rs:
+/Users/MatthiasSchmitt/.cargo/registry/src/index.crates.io-6f17d22bba15001f/colorgrad-0.5.0/src/spline.rs:
