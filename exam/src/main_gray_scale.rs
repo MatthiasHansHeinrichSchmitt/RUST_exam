@@ -1,132 +1,130 @@
-use image::{GrayImage, Luma}; //creating and saving grayscale images
-use std::env; //allows to read command-line arguments
-use std::fs::File; //opens and reads files
-use std::io::{self, BufRead}; //tools to read line by line
-use image::{GrayImage, Rgb, RgbImage};
+use image::{GrayImage, Luma, Rgb, RgbImage}; // Image types
+use std::env; // For reading command-line arguments
+use std::fs::{self, File}; // For reading files and directories
+use std::io::{self, BufRead}; // Buffered reader for line-by-line reading
+use std::path::{Path, PathBuf}; // Path utilities
 
+// Convert grayscale to a basic RGB gradient (optional; not used here but useful for extension)
 fn gray_to_color_gradient(gray_image: &GrayImage) -> RgbImage {
     let (width, height) = gray_image.dimensions();
     let mut color_image = RgbImage::new(width, height);
 
     for (x, y, gray_pixel) in gray_image.enumerate_pixels() {
-        let gray_value = gray_pixel[0];  // Grayscale value (0-255)
-
-        // Map gray value to a color gradient.
-        let r = gray_value;      // Red channel (0-255)
-        let g = 255 - gray_value; // Green channel (inverted for contrast)
-        let b = (gray_value / 2) as u8; // Blue channel (half the grayscale value)
-
-        // Set the pixel in the color image.
+        let gray_value = gray_pixel[0];
+        let r = gray_value;
+        let g = 255 - gray_value;
+        let b = (gray_value / 2) as u8;
         color_image.put_pixel(x, y, Rgb([r, g, b]));
     }
 
     color_image
 }
 
-fn main() -> io::Result<()> {//I/O error as return of the function
+fn main() -> io::Result<()> {
+    let input_dir = "./dataset"; // Directory with .asc files
+    let output_dir = "./images/grayscale"; // Grayscale image output directory
 
-    // Get the file path from command-line arguments
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        eprintln!("Usage: {} <path_to_asc_file>", args[0]);
-        return Ok(());
+    // Create output directory if it doesn't exist
+    if !Path::new(output_dir).exists() {
+        fs::create_dir_all(output_dir)?;
     }
-    let filename = &args[1];
 
-    // Open the ASC file
-    let file = File::open(filename)?;//returning an error if it fails to open
-    let reader = io::BufReader::new(file);//BufReader allows efficient line-by-line reading
+    // Loop through all .asc files
+    for entry in fs::read_dir(input_dir)? {
+        let entry = entry?;
+        let path = entry.path();
 
-    let mut data: Vec<Vec<f32>> = Vec::new(); //creating a 2D Vector for the data
-    let mut ncols = 0; //init ncols
-    let mut nrows = 0; //init nrows
-    let mut nodata_value = -99999.0; //representing missing/no data in the grid
-    let mut reading_data = false;//false as long we are reading the header of the asc file
+        if path.extension().map(|ext| ext == "asc").unwrap_or(false) {
+            println!("Processing {:?}", path.file_name().unwrap());
 
-    // Read the file line by line
+            if let Err(e) = process_asc_to_grayscale(&path, output_dir) {
+                eprintln!("Failed to process {:?}: {}", path.file_name().unwrap(), e);
+            }
+        }
+    }
+
+    println!("All files processed!");
+    Ok(())
+}
+
+// Converts a single .asc file to a grayscale image
+fn process_asc_to_grayscale(path: &Path, output_dir: &str) -> io::Result<()> {
+    let file = File::open(path)?;
+    let reader = io::BufReader::new(file);
+
+    let mut data: Vec<Vec<f32>> = Vec::new();
+    let mut ncols = 0;
+    let mut nrows = 0;
+    let mut nodata_value = -99999.0;
+    let mut reading_data = false;
+
     for line in reader.lines() {
-        let line = line?; //in case of error giving an error message
-        let parts: Vec<&str> = line.split_whitespace().collect();//gathering all elements of the iterator split_whitespace in one vector of references to a string
+        let line = line?;
+        let parts: Vec<&str> = line.split_whitespace().collect();
 
         if parts.is_empty() {
-            continue; // Skip empty lines
+            continue;
         }
 
-        // Parse metadata
+        // Read header or elevation data
         if parts[0].to_lowercase() == "ncols" {
-            ncols = parts[1].parse().unwrap_or(0); // Default to 0 if invalid
+            ncols = parts[1].parse().unwrap_or(0);
         } else if parts[0].to_lowercase() == "nrows" {
-            nrows = parts[1].parse().unwrap_or(0); // Default to 0 if invalid
+            nrows = parts[1].parse().unwrap_or(0);
         } else if parts[0].to_lowercase() == "nodata_value" {
-            nodata_value = parts[1].parse().unwrap_or(-99999.0); // Default to -99999 if invalid
+            nodata_value = parts[1].parse().unwrap_or(-99999.0);
         } else {
-            // If we reach the actual data, start parsing rows
             reading_data = true;
         }
 
-        // Read data values after headers
         if reading_data {
-            // Ensure we have exactly ncols elements in each row
             let row: Vec<f32> = parts.iter().map(|&x| x.parse().unwrap_or(nodata_value)).collect();
-            if row.len() == ncols as usize {
+            if row.len() == ncols {
                 data.push(row);
             } else {
-                eprintln!("Warning: A row does not match the expected column count. Skipping it.");
+                eprintln!("Warning: row length mismatch, skipping row.");
             }
         }
     }
 
-    // Validate the number of rows
-    if data.len() != nrows as usize {
-        eprintln!("Error: Expected {} rows, but found {} rows.", nrows, data.len());
+    // Validate row count
+    if data.len() != nrows {
+        eprintln!("Error: expected {} rows, but got {}", nrows, data.len());
         return Ok(());
     }
 
-    // Find min and max elevation values
+    // Find min/max elevation
     let mut min_elevation = f32::MAX;
     let mut max_elevation = f32::MIN;
-
     for row in &data {
         for &val in row {
             if val != nodata_value {
-                if val < min_elevation {
-                    min_elevation = val;
-                }
-                if val > max_elevation {
-                    max_elevation = val;
-                }
+                if val < min_elevation { min_elevation = val; }
+                if val > max_elevation { max_elevation = val; }
             }
         }
     }
 
-    // Normalize and convert to grayscale image
-    let mut img = GrayImage::new(ncols as u32, nrows as u32);//using GrayImage of size ncolsxnrows
+    // Create grayscale image
+    let mut img = GrayImage::new(ncols as u32, nrows as u32);
 
     for (y, row) in data.iter().enumerate() {
         for (x, &val) in row.iter().enumerate() {
             let pixel_value = if val == nodata_value {
-                // NoData handling (set as black)
                 0 // Black for NoData
             } else {
-                // Scale value to the range [0, 255]
-                let scaled_value = (((val - min_elevation) / (max_elevation - min_elevation)) * 255.0)
-                    .min(255.0)
-                    .max(0.0) as u8;//ensuring the limits of 255 and 0
-
-                scaled_value
+                let scaled = ((val - min_elevation) / (max_elevation - min_elevation)) * 255.0;
+                scaled.clamp(0.0, 255.0) as u8
             };
-
-
-
-            img.put_pixel(x as u32, y as u32, Luma([pixel_value]));//visualising the values with Lum
+            img.put_pixel(x as u32, y as u32, Luma([pixel_value]));
         }
     }
 
-    // Save the output image
-    let output_filename = format!("{}_grayscale.png", filename);
-    img.save(output_filename).expect("Failed to save image");
-    println!("Image saved successfully!");
+    // Save the image in grayscale output folder
+    let filename = path.file_stem().unwrap().to_string_lossy();
+    let output_path: PathBuf = [output_dir, &format!("{}_grayscale.png", filename)].iter().collect();
+    img.save(output_path).expect("Failed to save grayscale image");
+    println!("Saved: {}", filename);
 
     Ok(())
 }
-
