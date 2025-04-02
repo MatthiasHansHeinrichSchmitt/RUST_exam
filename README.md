@@ -17,10 +17,10 @@ For task 1, we are referring to `main_gray_scale.rs`. We implemented a function 
 
 ```rust
 let mut data: Vec<Vec<f32>> = Vec::new();
-    let mut ncols = 0;
-    let mut nrows = 0;
-    let mut nodata_value = -99999.0;
-    let mut reading_data = false;
+let mut ncols = 0;
+let mut nrows = 0;
+let mut nodata_value = -99999.0;
+let mut reading_data = false;
 ```
 2. **Read the First Lines**: Extract metadata by searching for key words.
 
@@ -40,9 +40,10 @@ else {reading_data = true;}
 
 ```rust
 let row: Vec<f32> = parts.iter().map(|&x| x.parse().unwrap_or(nodata_value)).collect();
-            if row.len() == ncols {
+if row.len() == ncols {
                 data.push(row);
-            } else {
+            } 
+else {
                 eprintln!("Warning: row length mismatch, skipping row.");
             }
 ```
