@@ -53,6 +53,14 @@ We implemented `save_colored_image`, which takes:
 - The hyperparameters (min/max values)
 - The output path reference
 
+#### Dependencies
+We modify the `Cargo.toml` by adding the colorgard **crate**.
+
+```toml
+[dependencies]
+image = "0.24.6" # for the GrayImage
+```
+
 ### Steps:
 1. **Assess Min & Max Values**: Determine the range of the data.
 
@@ -100,7 +108,7 @@ A grayscaled terrain image:
 <output_dir>/{}_grayscale.png
 ```
 
-with '{}' representing the original filename of the *input*.
+with `{}` representing the original filename of the *input*.
 
 ## Task 2: How to Generate a Color-Scaled Image from ASC Data
 For task 2, we are referring to `main_color_scale.rs`. The procedure is identical to the grayscale image generation, with one key difference:
@@ -157,7 +165,7 @@ A full-color terrain image:
 <output_dir>/{}_colored.png
 ```
 
-with '{}' representing the original filename of the *input*.
+with `{}` representing the original filename of the *input*.
 
 ## Task 3: Hillshade algorithm
 
