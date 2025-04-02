@@ -1,6 +1,8 @@
 # RUST_exam
 
-Developer's Names: Muhammad Azka Bintang Pramudya, Matthias Hans Heinrich Schmitt
+Developer's Names: 
+- Muhammad Azka Bintang Pramudya 🇮🇩 
+- Matthias Hans Heinrich Schmitt 🇩🇪
 
 In the following three sections, we are going to comment on the code pipelines of the different tasks.
 
@@ -224,9 +226,9 @@ Place your `.asc` files inside the `dataset` folder like this:
 
 ```
 dataset/
-├── terrain.asc
-├── mountain.asc
-└── river.asc
+├── ASC_file_A.asc
+├── ASC_file_B.asc
+└── ASC_file_C.asc
 ```
 
 ---
@@ -237,15 +239,15 @@ The output will be organized under `output/` like so:
 
 ```
 output/
-├── terrain/
+├── ASC_file_A/
 │   ├── grayscale.png
 │   ├── colored.png
 │   └── hillside.png
-├── mountain/
+├── ASC_file_B/
 │   ├── grayscale.png
 │   ├── colored.png
 │   └── hillside.png
-└── river/
+└── ASC_file_C/
     ├── grayscale.png
     ├── colored.png
     └── hillside.png
