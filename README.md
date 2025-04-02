@@ -14,27 +14,38 @@ For task 1, we are referring to `main_gray_scale.rs`. We implemented a function 
 
 ### Steps:
 1. **Initialize Hyperparameters**: Set the number of columns, rows, and define the replacement value for missing data (-99999).
+
+```rust
+let mut data: Vec<Vec<f32>> = Vec::new();
+    let mut ncols = 0;
+    let mut nrows = 0;
+    let mut nodata_value = -99999.0;
+    let mut reading_data = false;
+```
 2. **Read the First Lines**: Extract metadata by searching for key words.
 
 ```rust
-if parts[0].to_lowercase() == "ncols" 
-    {
+if parts[0].to_lowercase() == "ncols" {
         ncols = parts[1].parse().unwrap_or(0);
     } 
-else if parts[0].to_lowercase() == "nrows" 
-    {
+else if parts[0].to_lowercase() == "nrows" {
         nrows = parts[1].parse().unwrap_or(0);
     } 
 else if parts[0].to_lowercase() == "nodata_value" {
         nodata_value = parts[1].parse().unwrap_or(-99999.0);
     } 
-else 
-    {
-        reading_data = true;
-    }
+else {reading_data = true;}
 ```
 3. **Parse the Map Data**: Read the entire map and store it in a 2D vector for further processing.
 
+```rust
+let row: Vec<f32> = parts.iter().map(|&x| x.parse().unwrap_or(nodata_value)).collect();
+            if row.len() == ncols {
+                data.push(row);
+            } else {
+                eprintln!("Warning: row length mismatch, skipping row.");
+            }
+```
 ## Task 1b: How to Retrieve a Grayscale Image from ASC Data
 We implemented `save_colored_image`, which takes:
 - A reference to the data vector
@@ -43,8 +54,40 @@ We implemented `save_colored_image`, which takes:
 
 ### Steps:
 1. **Assess Min & Max Values**: Determine the range of the data.
-2. **Initialize the Image**: Prepare the image for pixel assignment.
+
+```rust
+let mut min_elevation = f32::MAX;
+    let mut max_elevation = f32::MIN;
+    for row in &data {
+        for &val in row {
+            if val != nodata_value {
+                if val < min_elevation { min_elevation = val; }
+                if val > max_elevation { max_elevation = val; }
+            }
+        }
+    }
+```
+2. **Initialize the Image**: Prepare the image for pixel assignment, using the image crate.
+
+```rust
+let mut img = GrayImage::new(ncols as u32, nrows as u32);
+```
+
 3. **Normalize and Map Pixel Values**: Loop through the 2D vector, normalize each value based on min & max, and assign grayscale intensity.
+
+```rust
+for (y, row) in data.iter().enumerate() {
+        for (x, &val) in row.iter().enumerate() {
+            let pixel_value = if val == nodata_value {
+                0 // Black for NoData
+            } else {
+                let scaled = ((val - min_elevation) / (max_elevation - min_elevation)) * 255.0;
+                scaled.clamp(0.0, 255.0) as u8
+            };
+            img.put_pixel(x as u32, y as u32, Luma([pixel_value]));
+        }
+    }
+```
 
 ### Task 2: How to Generate a Color-Scaled Image from ASC Data
 For task 2, we are referring to `main_color_scale.rs`. The procedure is identical to the grayscale image generation, with one key difference:
