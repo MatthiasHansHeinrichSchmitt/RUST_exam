@@ -317,7 +317,7 @@ A full-color terrain image with realistic light and shadow:
 
 
 ## Task 4: Add a feature - Automatic Batch Processing
-This Rust program automatically processes all `.asc` files within a given input directory and generates corresponding visualizations (grayscale, color, and hillshade) for each file.
+For this last task, we are referring to `main.rs`. This Rust program automatically processes all `.asc` files within a given input directory and generates corresponding visualizations (grayscale, color, and hillshade) for each file.
 
 The program:
 - Searches for all `.asc` files in the `./dataset/` folder
