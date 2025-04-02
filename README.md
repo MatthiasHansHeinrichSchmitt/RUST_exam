@@ -95,7 +95,7 @@ For task 2, we are referring to `main_color_scale.rs`. The procedure is identica
 - A **color scale** is introduced.
 - The **`RgbImage` crate** is used to store the resulting image.
 
-### Dependencies
+#### Dependencies
 We modify the `Cargo.toml` by adding the colorgard **crate**.
 
 ```toml
@@ -104,8 +104,13 @@ image = "0.24.6" # for the GrayscaleRgb,RgbImage
 colorgrad = "0.6.0" # for the color gradient
 ```
 
-### Modified pixel assignment
+#### Modified pixel assignment
+
+We used the `.at(...)` method of *grad* to retrieve colors acording to the color scale for the normalised values. Then we assign the *pixel_value' with the *Rgb* type.
+
 ```rust
+let grad = colorgrad::viridis();
+let mut color_img = RgbImage::new(ncols as u32, nrows as u32);
 for (y, row) in data.iter().enumerate() {
         for (x, &val) in row.iter().enumerate() {
             let pixel_value = if val == nodata_value {
@@ -132,7 +137,7 @@ for (y, row) in data.iter().enumerate() {
 
 ## Task 3: Hillshade algorithm
 
-Even after using color scaling, raw `.asc` elevation data can look flat and blurry. To improve the visual clarity and give it a more realistic 3D appearance, we apply **hillshading** using the **Horn method**.
+Even after using color scaling, raw `.asc` elevation data can look flat and blurry. To improve the visual clarity and give it a more realistic 3D appearance, we apply **hillshading** using the **Horn method**. For this task, we are referring to `main_hillshade.rs`. 
 
 ---
 
@@ -205,7 +210,7 @@ for y in 0..nrows {
 
 For each point:
 - If `val == nodata`, use black `[0, 0, 0]`
-- Else, normalize and convert elevation to color with `viridis`
+- Else, normalise and convert elevation to color with `viridis`
 - Then calculate hillshade
 
 ---
