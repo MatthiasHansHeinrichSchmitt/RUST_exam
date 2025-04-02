@@ -17,15 +17,21 @@ For task 1, we are referring to `main_gray_scale.rs`. We implemented a function 
 2. **Read the First Lines**: Extract metadata by searching for key words.
 
 ```rust
-if parts[0].to_lowercase() == "ncols" {
-            ncols = parts[1].parse().unwrap_or(0);
-        } else if parts[0].to_lowercase() == "nrows" {
-            nrows = parts[1].parse().unwrap_or(0);
-        } else if parts[0].to_lowercase() == "nodata_value" {
-            nodata_value = parts[1].parse().unwrap_or(-99999.0);
-        } else {
-            reading_data = true;
-        }
+if parts[0].to_lowercase() == "ncols" 
+    {
+        ncols = parts[1].parse().unwrap_or(0);
+    } 
+else if parts[0].to_lowercase() == "nrows" 
+    {
+        nrows = parts[1].parse().unwrap_or(0);
+    } 
+else if parts[0].to_lowercase() == "nodata_value" {
+        nodata_value = parts[1].parse().unwrap_or(-99999.0);
+    } 
+else 
+    {
+        reading_data = true;
+    }
 ```
 3. **Parse the Map Data**: Read the entire map and store it in a 2D vector for further processing.
 

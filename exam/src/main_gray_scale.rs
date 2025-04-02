@@ -67,13 +67,19 @@ fn process_asc_to_grayscale(path: &Path, output_dir: &str) -> io::Result<()> {
         }
 
         // Read header or elevation data
-        if parts[0].to_lowercase() == "ncols" {
+        if parts[0].to_lowercase() == "ncols" 
+        {
             ncols = parts[1].parse().unwrap_or(0);
-        } else if parts[0].to_lowercase() == "nrows" {
+        } 
+        else if parts[0].to_lowercase() == "nrows" 
+        {
             nrows = parts[1].parse().unwrap_or(0);
-        } else if parts[0].to_lowercase() == "nodata_value" {
+        } 
+        else if parts[0].to_lowercase() == "nodata_value" {
             nodata_value = parts[1].parse().unwrap_or(-99999.0);
-        } else {
+        } 
+        else 
+        {
             reading_data = true;
         }
 
