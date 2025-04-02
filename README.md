@@ -90,6 +90,18 @@ for (y, row) in data.iter().enumerate() {
     }
 ```
 
+---
+
+### Output
+
+A grayscaled terrain image:
+
+```
+<output_dir>/{}_grayscale.png
+```
+
+with '{}' representing the original filename of the *input*.
+
 ## Task 2: How to Generate a Color-Scaled Image from ASC Data
 For task 2, we are referring to `main_color_scale.rs`. The procedure is identical to the grayscale image generation, with one key difference:
 - A **color scale** is introduced.
@@ -106,7 +118,7 @@ colorgrad = "0.6.0" # for the color gradient
 
 #### Modified pixel assignment
 
-We used the `.at(...)` method of *grad* to retrieve colors acording to the color scale for the normalised values. Then we assign the *pixel_value' with the *Rgb* type.
+We used the `.at(...)` method of *grad* to retrieve colors acording to the color scale for the normalised values. Then we assign the *pixel_value* with the *Rgb* type.
 
 ```rust
 let grad = colorgrad::viridis();
@@ -134,6 +146,18 @@ for (y, row) in data.iter().enumerate() {
         }
     }
 ```
+
+---
+
+### Output
+
+A full-color terrain image:
+
+```
+<output_dir>/{}_colored.png
+```
+
+with '{}' representing the original filename of the *input*.
 
 ## Task 3: Hillshade algorithm
 

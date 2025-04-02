@@ -110,7 +110,7 @@ fn main() -> io::Result<()> {//I/O error as return of the function
     }
 
     // Save the output image
-    let output_filename = format!("{}_grayscale.png", filename);
+    let output_filename = format!("{}_colored.png", filename);
     color_img.save(output_filename).expect("Failed to save image");
     println!("Image saved successfully!");
 
