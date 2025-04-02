@@ -5,3 +5,164 @@ Developer's Names: Muhammad Azka Bintang Pramudya
 ## Task 3 explanations
 
 With the ... we wanted to deliver an innovative tool.
+
+# RUST_exam
+
+Developer's Names: Muhammad Azka Bintang Pramudya
+
+## Task 3 explanations
+
+With the ... we wanted to deliver an innovative tool.
+
+
+## Hillshade algorithm
+
+Even after using color scaling, raw `.asc` elevation data can look flat and blurry. To improve the visual clarity and give it a more realistic 3D appearance, we apply **hillshading** using the **Horn method**.
+
+---
+
+#### 1. **Find Min/Max Elevation Values**
+
+We use this function to find the minimum and maximum elevation values from the ASC data, while ignoring `NoData` values:
+
+```rust
+fn find_min_max(data: &Vec<Vec<f32>>, nodata: f32) -> (f32, f32) {
+    let mut min = f32::MAX;
+    let mut max = f32::MIN;
+    for row in data {
+        for &val in row {
+            if val != nodata {
+                if val < min { min = val; }
+                if val > max { max = val; }
+            }
+        }
+    }
+    (min, max)
+}
+```
+
+This is essential for **normalizing** the elevation data later.
+
+---
+
+#### 2. **Apply the Color Gradient (`viridis`)**
+
+We use the [`colorgrad`](https://docs.rs/colorgrad/latest/colorgrad/) crate, specifically the `viridis` colormap, to visualize the elevation:
+
+```rust
+let grad = colorgrad::viridis();
+```
+
+Each elevation value is normalized to `[0.0, 1.0]` and mapped to a corresponding RGB color.
+
+---
+
+#### 3. **Prepare Image and Convert to `f64`**
+
+The elevation data is converted to [`f64`](https://doc.rust-lang.org/std/primitive.f64.html) for numerical stability in gradient calculations:
+
+```rust
+let elev_f64: Vec<Vec<f64>> = data.iter()
+    .map(|row| row.iter().map(|&x| x as f64).collect())
+    .collect();
+```
+
+We also prepare a new image buffer:
+
+```rust
+let mut img = RgbImage::new(ncols as u32, nrows as u32);
+```
+
+---
+
+#### 4. **Loop Through Pixels**
+
+We iterate over each pixel in the elevation grid:
+
+```rust
+for y in 0..nrows {
+    for x in 0..ncols {
+        let val = data[y][x];
+        // color + hillshade calculations go here
+    }
+}
+```
+
+For each point:
+- If `val == nodata`, use black `[0, 0, 0]`
+- Else, normalize and convert elevation to color with `viridis`
+- Then calculate hillshade
+
+---
+
+#### 5. **Understanding the Hillshade (Horn Method)**
+
+**Hillshading** is a cartographic technique to simulate how sunlight would illuminate terrain from a specific direction.
+
+We use the **Horn method**, which computes slope and aspect using a 3×3 window around each cell:
+
+##### Given a 3x3 matrix like this:
+
+```
+z1 z2 z3
+z4 z5 z6
+z7 z8 z9
+```
+
+With `z5` as the current pixel.
+
+#####  Horn’s slope formulas:
+
+- **Slope in X (east-west):**
+  ```
+  dz/dx = ((z3 + 2*z6 + z9) - (z1 + 2*z4 + z7)) / (8 * cell_size)
+  ```
+
+- **Slope in Y (north-south):**
+  ```
+  dz/dy = ((z7 + 2*z8 + z9) - (z1 + 2*z2 + z3)) / (8 * cell_size)
+  ```
+
+##### Final illumination formula:
+
+```math
+I = 255 × (sin(alt) × sin(slope) + cos(alt) × cos(slope) × cos(azimuth - aspect))
+```
+
+Where:
+- `alt` = altitude angle of sun (e.g., 45°)
+- `azimuth` = sun horizontal angle (e.g., 315° for NW)
+- `slope` = terrain steepness
+- `aspect` = slope direction
+
+The result `I` is clamped between `0` and `255`, giving us the **grayscale hillshade**.
+
+---
+
+#### Final Code Snippet (Hillshade Application)
+
+```rust
+let factor = shade as f32 / 255.0;
+let shaded = Rgb([
+    (base_color[0] as f32 * (1.0 - factor)) as u8,
+    (base_color[1] as f32 * (1.0 - factor)) as u8,
+    (base_color[2] as f32 * (1.0 - factor)) as u8,
+]);
+
+img.put_pixel(x as u32, y as u32, shaded);
+```
+
+This merges the color and shade to create a realistic, pseudo-3D terrain visualization.
+
+---
+
+### Output
+
+A full-color terrain image with realistic light and shadow:
+```
+<output_dir>/hillside.png
+```
+
+---
+
+
