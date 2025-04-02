@@ -40,12 +40,8 @@ else {reading_data = true;}
 
 ```rust
 let row: Vec<f32> = parts.iter().map(|&x| x.parse().unwrap_or(nodata_value)).collect();
-if row.len() == ncols {
-                data.push(row);
-            } 
-else {
-                eprintln!("Warning: row length mismatch, skipping row.");
-            }
+if row.len() == ncols {data.push(row);} 
+else {eprintln!("Warning: row length mismatch, skipping row.");}
 ```
 ## Task 1b: How to Retrieve a Grayscale Image from ASC Data
 We implemented `save_colored_image`, which takes:
