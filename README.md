@@ -96,11 +96,38 @@ For task 2, we are referring to `main_color_scale.rs`. The procedure is identica
 - The **`RgbImage` crate** is used to store the resulting image.
 
 ### Dependencies
-Ensure that the following dependencies are included in your Rust project:
+We modify the `Cargo.toml` by adding the colorgard **crate**.
 
 ```toml
 [dependencies]
-image = "*"  # For handling images
+image = "0.24.6" # for the GrayscaleRgb,RgbImage
+colorgrad = "0.6.0" # for the color gradient
+```
+
+### Modified pixel assignment
+```rust
+for (y, row) in data.iter().enumerate() {
+        for (x, &val) in row.iter().enumerate() {
+            let pixel_value = if val == nodata_value {
+                // NoData handling (set as black)
+                Rgb([0, 0, 0]) // Black for NoData
+            } else {
+                // Scale value to the range [0, 255]
+                let norm = (val - min_elevation) / (max_elevation - min_elevation);
+                let color = grad.at(norm.clamp(0.0, 1.0)as f64);
+                let rgba = color.rgba();
+                Rgb([
+                    (rgba.0 * 255.0) as u8,
+                    (rgba.1 * 255.0) as u8,
+                    (rgba.2 * 255.0) as u8,
+                ])
+            };
+
+
+
+            color_img.put_pixel(x as u32, y as u32, pixel_value);//visualising the values with Lum
+        }
+    }
 ```
 
 ## Task 3: Hillshade algorithm
