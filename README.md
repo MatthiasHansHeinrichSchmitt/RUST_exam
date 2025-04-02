@@ -40,8 +40,12 @@ else {reading_data = true;}
 
 ```rust
 let row: Vec<f32> = parts.iter().map(|&x| x.parse().unwrap_or(nodata_value)).collect();
-if row.len() == ncols {data.push(row);} 
-else {eprintln!("Warning: row length mismatch, skipping row.");}
+if row.len() == ncols {
+    data.push(row);
+    } 
+else {
+    eprintln!("Warning: row length mismatch, skipping row.");
+    }
 ```
 ## Task 1b: How to Retrieve a Grayscale Image from ASC Data
 We implemented `save_colored_image`, which takes:
@@ -86,7 +90,7 @@ for (y, row) in data.iter().enumerate() {
     }
 ```
 
-### Task 2: How to Generate a Color-Scaled Image from ASC Data
+## Task 2: How to Generate a Color-Scaled Image from ASC Data
 For task 2, we are referring to `main_color_scale.rs`. The procedure is identical to the grayscale image generation, with one key difference:
 - A **color scale** is introduced.
 - The **`RgbImage` crate** is used to store the resulting image.
@@ -99,7 +103,7 @@ Ensure that the following dependencies are included in your Rust project:
 image = "*"  # For handling images
 ```
 
-### Task 3: Hillshade algorithm
+## Task 3: Hillshade algorithm
 
 Even after using color scaling, raw `.asc` elevation data can look flat and blurry. To improve the visual clarity and give it a more realistic 3D appearance, we apply **hillshading** using the **Horn method**.
 
@@ -248,7 +252,7 @@ A full-color terrain image with realistic light and shadow:
 ```
 
 
-## Q3 Added feature: Automatic Batch Processing
+## Task 4: Add a feature - Automatic Batch Processing
 This Rust program automatically processes all `.asc` files within a given input directory and generates corresponding visualizations (grayscale, color, and hillshade) for each file.
 
 The program:
