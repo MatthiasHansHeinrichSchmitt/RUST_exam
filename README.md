@@ -1,21 +1,45 @@
 # RUST_exam
 
-Developer's Names: Muhammad Azka Bintang Pramudya
+Developer's Names: Muhammad Azka Bintang Pramudya, Matthias Hans Heinrich Schmitt
 
-## Task 3 explanations
-
-With the ... we wanted to deliver an innovative tool.
-
-# RUST_exam
-
-Developer's Names: Muhammad Azka Bintang Pramudya
-
-## Task 3 explanations
-
-With the ... we wanted to deliver an innovative tool.
+In the following three sections, we are going to comment on the code pipelines of the different tasks.
 
 
-## Hillshade algorithm
+## Task 1a: How to Read ASC Files
+We implemented a function `process_asc_to_grayscale` that takes:
+- A path reference to the ASC file
+- A desired output path to save the grayscale image
+
+### Steps:
+1. **Initialize Hyperparameters**: Set the number of columns, rows, and define the replacement value for missing data (-9999).
+2. **Read the First Lines**: Extract metadata by searching for key terms.
+3. **Parse the Map Data**: Read the entire map and store it in a 2D vector for further processing.
+
+## Task 1b: How to Retrieve a Grayscale Image from ASC Data
+We implemented `save_colored_image`, which takes:
+- A reference to the data vector
+- The hyperparameters (min/max values)
+- The output path reference
+
+### Steps:
+1. **Assess Min & Max Values**: Determine the range of the data.
+2. **Initialize the Image**: Prepare the image for pixel assignment.
+3. **Normalize and Map Pixel Values**: Loop through the 2D vector, normalize each value based on min & max, and assign grayscale intensity.
+
+### Task 2: How to Generate a Color-Scaled Image from ASC Data
+The procedure is identical to the grayscale image generation, with one key difference:
+- A **color scale** is introduced.
+- The **`RgbImage` crate** is used to store the resulting image.
+
+### Dependencies
+Ensure that the following dependencies are included in your Rust project:
+
+```toml
+[dependencies]
+image = "*"  # For handling images
+```
+
+### Task 3: Hillshade algorithm
 
 Even after using color scaling, raw `.asc` elevation data can look flat and blurry. To improve the visual clarity and give it a more realistic 3D appearance, we apply **hillshading** using the **Horn method**.
 
