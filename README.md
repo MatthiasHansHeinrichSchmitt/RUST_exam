@@ -8,13 +8,25 @@ In the following three sections, we are going to comment on the code pipelines o
 
 
 ## Task 1a: How to Read ASC Files
-We implemented a function `process_asc_to_grayscale` that takes:
+For task 1, we are referring to `main_gray_scale.rs`. We implemented a function `process_asc_to_grayscale` that takes:
 - A path reference to the ASC file
 - A desired output path to save the grayscale image
 
 ### Steps:
-1. **Initialize Hyperparameters**: Set the number of columns, rows, and define the replacement value for missing data (-9999).
-2. **Read the First Lines**: Extract metadata by searching for key terms.
+1. **Initialize Hyperparameters**: Set the number of columns, rows, and define the replacement value for missing data (-99999).
+2. **Read the First Lines**: Extract metadata by searching for key words.
+
+```rust
+if parts[0].to_lowercase() == "ncols" {
+            ncols = parts[1].parse().unwrap_or(0);
+        } else if parts[0].to_lowercase() == "nrows" {
+            nrows = parts[1].parse().unwrap_or(0);
+        } else if parts[0].to_lowercase() == "nodata_value" {
+            nodata_value = parts[1].parse().unwrap_or(-99999.0);
+        } else {
+            reading_data = true;
+        }
+```
 3. **Parse the Map Data**: Read the entire map and store it in a 2D vector for further processing.
 
 ## Task 1b: How to Retrieve a Grayscale Image from ASC Data
@@ -29,7 +41,7 @@ We implemented `save_colored_image`, which takes:
 3. **Normalize and Map Pixel Values**: Loop through the 2D vector, normalize each value based on min & max, and assign grayscale intensity.
 
 ### Task 2: How to Generate a Color-Scaled Image from ASC Data
-The procedure is identical to the grayscale image generation, with one key difference:
+For task 2, we are referring to `main_color_scale.rs`. The procedure is identical to the grayscale image generation, with one key difference:
 - A **color scale** is introduced.
 - The **`RgbImage` crate** is used to store the resulting image.
 
